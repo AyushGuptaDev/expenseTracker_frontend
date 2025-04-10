@@ -1,14 +1,32 @@
+import 'package:expense_tracker_with_node/api_calls/authentication.dart';
+import 'package:expense_tracker_with_node/widgets/image_box.dart';
 import 'package:flutter/material.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<SignupScreen> createState() => _SignupScreenState();
+}
 
+class _SignupScreenState extends State<SignupScreen> {
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final ValueNotifier<String?> imagePathNotifier = ValueNotifier(null);
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    usernameController.dispose();
+    imagePathNotifier.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -18,12 +36,16 @@ class SignupScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Login",
+                  "Sign up",
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                   maxLines: 1,
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
+
+                ImageBox(imagePathNotifier: imagePathNotifier),
+
+                const SizedBox(height: 30),
 
                 TextField(
                   controller: usernameController,
@@ -103,7 +125,13 @@ class SignupScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      //TODO: add sisgnup function
+                      ApiAuthentication.signUpUser(
+                        context: context,
+                        userName: usernameController.text.trim(),
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                        imagePathNotifier: imagePathNotifier,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -117,10 +145,10 @@ class SignupScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-                //Spacer(),
+
                 TextButton(
                   onPressed: () {
-                    // TODO: Navigate to login screen
+                    Navigator.pop(context);
                   },
                   child: const Text("already have an account?  Login"),
                 ),

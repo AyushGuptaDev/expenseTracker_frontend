@@ -1,14 +1,27 @@
+import 'package:expense_tracker_with_node/Screen/signup_screen.dart';
 import 'package:expense_tracker_with_node/api_calls/authentication.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailOrUsernameController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  final emailOrUsernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailOrUsernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -80,9 +93,9 @@ class LoginScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () async {
                       await ApiAuthentication.loginUser(
-                        context,
-                        emailOrUsernameController.text.trim(),
-                        passwordController.text,
+                        context: context,
+                        emailOrUsername: emailOrUsernameController.text.trim(),
+                        password: passwordController.text,
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -99,8 +112,16 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 //Spacer(),
                 TextButton(
-                  onPressed: () {
-                    // TODO: Navigate to signup screen
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignupScreen()),
+                    );
+                    if (result != null && result == "User created") {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(result)));
+                    }
                   },
                   child: const Text("Don't have an account? Sign Up"),
                 ),

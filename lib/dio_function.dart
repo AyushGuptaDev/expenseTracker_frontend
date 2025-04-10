@@ -14,7 +14,6 @@ Future<void> setupDio() async {
   final String cookiePath = "${appDoDir.path}/.cookies/";
 
   final String baseurl = dotenv.env['BASE_URL']!;
-  print("dotenvUrl  $baseurl");
 
   final cookieJar = PersistCookieJar(
     storage: FileStorage(cookiePath),
