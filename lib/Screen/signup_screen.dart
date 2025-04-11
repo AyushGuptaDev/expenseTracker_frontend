@@ -1,4 +1,4 @@
-import 'package:expense_tracker_with_node/api_calls/authentication.dart';
+import 'package:expense_tracker_with_node/api_calls/login_and_signup.dart';
 import 'package:expense_tracker_with_node/widgets/image_box.dart';
 import 'package:flutter/material.dart';
 
@@ -126,7 +126,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       ApiAuthentication.signUpUser(
-                        context: context,
+                        //context: context,
+                        state: this,
                         userName: usernameController.text.trim(),
                         email: emailController.text.trim(),
                         password: passwordController.text.trim(),

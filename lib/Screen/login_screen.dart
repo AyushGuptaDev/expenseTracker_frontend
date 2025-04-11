@@ -1,15 +1,16 @@
 import 'package:expense_tracker_with_node/Screen/signup_screen.dart';
-import 'package:expense_tracker_with_node/api_calls/authentication.dart';
+import 'package:expense_tracker_with_node/api_calls/login_and_signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailOrUsernameController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -94,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       await ApiAuthentication.loginUser(
                         context: context,
+                        ref: ref,
                         emailOrUsername: emailOrUsernameController.text.trim(),
                         password: passwordController.text,
                       );
@@ -113,14 +115,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 //Spacer(),
                 TextButton(
                   onPressed: () async {
+                    final messager = ScaffoldMessenger.of(context);
                     final result = await Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SignupScreen()),
                     );
                     if (result != null && result == "User created") {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(result)));
+                      messager.showSnackBar(SnackBar(content: Text(result)));
                     }
                   },
                   child: const Text("Don't have an account? Sign Up"),

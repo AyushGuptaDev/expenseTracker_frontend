@@ -1,11 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:expense_tracker_with_node/Screen/home_screen.dart';
 import 'package:expense_tracker_with_node/dio_function.dart';
+import 'package:expense_tracker_with_node/river_pod/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiAuthentication {
   static Future<void> loginUser({
     required BuildContext context,
+    required WidgetRef ref,
     required String emailOrUsername,
     required String password,
   }) async {
@@ -21,12 +28,18 @@ class ApiAuthentication {
       );
       final data = response.data;
       if (response.statusCode == 200) {
-        print(data);
-        messager.showSnackBar(
-          const SnackBar(
-            content: Text("Login Successful"),
-            backgroundColor: Colors.green,
-          ),
+        ref.read(userProvider.notifier).state = data['user'];
+
+        final SharedPreferences pref = await SharedPreferences.getInstance();
+
+        final userJson = jsonEncode(data['user']);
+        await pref.setString("user", userJson);
+
+        if (!context.mounted) return;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } else {
         messager.showSnackBar(
@@ -50,13 +63,14 @@ class ApiAuthentication {
   }
 
   static Future<void> signUpUser({
-    required BuildContext context,
+    //required BuildContext context,
+    required State state,
     required String userName,
     required String email,
     required String password,
     required ValueNotifier<String?> imagePathNotifier,
   }) async {
-    final messager = ScaffoldMessenger.of(context);
+    final messager = ScaffoldMessenger.of(state.context);
     try {
       final formData = FormData.fromMap({
         'userName': userName,
@@ -74,7 +88,10 @@ class ApiAuthentication {
         data: formData,
         options: Options(contentType: 'multipart/form-data'),
       );
+
+      if (!state.mounted) return;
       final data = response.data;
+
       if (response.statusCode == 201) {
         print(data['user']);
         messager.showSnackBar(
@@ -83,7 +100,7 @@ class ApiAuthentication {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+        Navigator.pop(state.context);
       } else {
         messager.showSnackBar(
           SnackBar(
