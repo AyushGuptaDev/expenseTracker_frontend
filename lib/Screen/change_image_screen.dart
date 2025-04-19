@@ -13,37 +13,44 @@ class ChangeImageScreen extends ConsumerWidget {
 
     final ValueNotifier<String?> imagePathNotifier = ValueNotifier(null);
 
-    return Center(
-      child: Column(
-        children: [
-          ImageBox(
-            imagePathNotifier: imagePathNotifier,
-            buildPlaceholder:
-                () => DefaultImagePlaceholder(imageUrl: user!['coverImage']),
-          ),
-
-          SizedBox(height: 30),
-
-          SizedBox(
-            child: ElevatedButton(
-              onPressed: () {
-                EditUser.changeCoverImage(
-                  ref: ref,
-                  context: context,
-                  imagePathNotifier: imagePathNotifier,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              child: Text("Change Image", style: TextStyle(fontSize: 20)),
+    return Scaffold(
+      appBar: AppBar(title: const Text("Change Cover Image")),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 80),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ImageBox(
+              imagePathNotifier: imagePathNotifier,
+              buildPlaceholder:
+                  () => DefaultImagePlaceholder(imageUrl: user!['coverImage']),
             ),
-          ),
-        ],
+
+            SizedBox(height: 60),
+
+            SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  EditUser.changeCoverImage(
+                    ref: ref,
+                    context: context,
+                    imagePathNotifier: imagePathNotifier,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: Text("Change Image", style: TextStyle(fontSize: 20)),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

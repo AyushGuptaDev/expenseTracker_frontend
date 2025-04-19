@@ -114,15 +114,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 20),
                 //Spacer(),
                 TextButton(
-                  onPressed: () async {
-                    final messager = ScaffoldMessenger.of(context);
-                    final result = await Navigator.push(
+                  onPressed: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SignupScreen()),
                     );
-                    if (result != null && result == "User created") {
-                      messager.showSnackBar(SnackBar(content: Text(result)));
-                    }
                   },
                   child: const Text("Don't have an account? Sign Up"),
                 ),

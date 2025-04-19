@@ -1,5 +1,6 @@
 import 'package:expense_tracker_with_node/Screen/change_image_screen.dart';
 import 'package:expense_tracker_with_node/Screen/change_password_screen.dart';
+import 'package:expense_tracker_with_node/api_calls/login_and_signup.dart';
 import 'package:expense_tracker_with_node/river_pod/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,7 @@ class DrawerHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final imageUrl = user!['coverImage'];
-    // TODO: implement build
+
     return Drawer(
       child: Column(
         children: [
@@ -37,7 +38,9 @@ class DrawerHome extends ConsumerWidget {
               ),
             ),
           ),
+
           SizedBox(height: 10),
+
           ListTile(
             title: Text("change CoverImage"),
             onTap: () {
@@ -49,6 +52,7 @@ class DrawerHome extends ConsumerWidget {
             },
             leading: Icon(Icons.edit),
           ),
+
           ListTile(
             title: Text("change password"),
             onTap: () {
@@ -59,6 +63,14 @@ class DrawerHome extends ConsumerWidget {
               );
             },
             leading: Icon(Icons.edit),
+          ),
+
+          ListTile(
+            title: Text("Log out"),
+            onTap: () async {
+              await ApiAuthentication.logout(context: context);
+            },
+            leading: Icon(Icons.logout),
           ),
         ],
       ),

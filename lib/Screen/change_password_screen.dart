@@ -61,7 +61,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   keyboardType: TextInputType.visiblePassword,
                   controller: newPasswordController,
                   decoration: InputDecoration(
-                    hintText: "current Password",
+                    hintText: "new Password",
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(
@@ -86,7 +86,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   keyboardType: TextInputType.visiblePassword,
                   controller: conformPasswordController,
                   decoration: InputDecoration(
-                    hintText: "current Password",
+                    hintText: "conform Password",
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(

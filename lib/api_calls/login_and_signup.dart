@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:expense_tracker_with_node/Screen/home_screen.dart';
+import 'package:expense_tracker_with_node/Screen/login_screen.dart';
 import 'package:expense_tracker_with_node/dio_function.dart';
 import 'package:expense_tracker_with_node/river_pod/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +115,31 @@ class ApiAuthentication {
         SnackBar(
           content: Text(
             "Login failed: ${e.response?.data['message'] ?? 'Unknown error'}",
+          ),
+        ),
+      );
+    }
+  }
+
+  static Future<void> logout({required BuildContext context}) async {
+    final massager = ScaffoldMessenger.of(context);
+    try {
+      final response = await dio.post("/user/logout");
+
+      //if (!context.mounted) return;
+
+      if (response.statusCode == 200) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+        );
+      }
+    } on DioException catch (e) {
+      massager.showSnackBar(
+        SnackBar(
+          content: Text(
+            "Failed: ${e.response?.data['message'] ?? 'Unknown error'}",
           ),
         ),
       );
