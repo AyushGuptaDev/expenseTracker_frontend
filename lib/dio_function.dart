@@ -24,5 +24,11 @@ Future<void> setupDio() async {
       Dio()
         ..options.baseUrl = baseurl
         ..options.headers['Content-Type'] = 'application/json'
-        ..interceptors.add(CookieManager(cookieJar));
+        ..interceptors.add(CookieManager(cookieJar))
+        ..options.connectTimeout = const Duration(
+          seconds: 5,
+        ) // 5s to establish connection
+        ..options.receiveTimeout = const Duration(
+          seconds: 5,
+        ); // 5s to receive data
 }

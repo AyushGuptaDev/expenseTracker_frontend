@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:expense_tracker_with_node/Screen/home_screen.dart';
 import 'package:expense_tracker_with_node/Screen/login_screen.dart';
 import 'package:expense_tracker_with_node/dio_function.dart';
+import 'package:expense_tracker_with_node/river_pod/expenses_provider.dart';
 import 'package:expense_tracker_with_node/river_pod/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,7 +95,6 @@ class ApiAuthentication {
       final data = response.data;
 
       if (response.statusCode == 201) {
-        print(data['user']);
         messager.showSnackBar(
           const SnackBar(
             content: Text("user created"),
@@ -121,7 +121,10 @@ class ApiAuthentication {
     }
   }
 
-  static Future<void> logout({required BuildContext context}) async {
+  static Future<void> logout({
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
     final massager = ScaffoldMessenger.of(context);
     try {
       final response = await dio.post("/user/logout");
@@ -129,6 +132,8 @@ class ApiAuthentication {
       //if (!context.mounted) return;
 
       if (response.statusCode == 200) {
+        ref.read(expensesProvider.notifier).clearAll();
+
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),

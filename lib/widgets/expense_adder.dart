@@ -1,8 +1,9 @@
 import 'package:expense_tracker_with_node/api_calls/expense.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExpenseAdder {
-  static void showBottomSheet(BuildContext context) {
+  static void showBottomSheet(BuildContext context, WidgetRef ref) {
     final amountController = TextEditingController();
     final titleController = TextEditingController();
 
@@ -50,6 +51,7 @@ class ExpenseAdder {
                   ],
                 ),
                 SizedBox(height: 20),
+
                 SizedBox(
                   height: 35,
                   width: double.infinity,
@@ -70,6 +72,7 @@ class ExpenseAdder {
 
                       await Expense.addExpense(
                         context: context,
+                        ref: ref,
                         amount: amount,
                         title: titleController.text,
                       );
