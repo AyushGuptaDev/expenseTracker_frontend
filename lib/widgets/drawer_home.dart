@@ -88,7 +88,9 @@ class DrawerHome extends ConsumerWidget {
                   endDate: endDate,
                 );
 
-                // Navigate to the DateWiseExpenseScreen
+                // Navigate to the DateWiseExpenseScree
+
+                if (!context.mounted) return;
 
                 Navigator.pop(context); // Close the drawer
                 Navigator.push(

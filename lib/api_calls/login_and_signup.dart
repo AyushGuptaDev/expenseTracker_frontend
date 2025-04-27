@@ -129,7 +129,7 @@ class ApiAuthentication {
     try {
       final response = await dio.post("/user/logout");
 
-      //if (!context.mounted) return;
+      if (!context.mounted) return;
 
       if (response.statusCode == 200) {
         ref.read(expensesProvider.notifier).clearAll();
